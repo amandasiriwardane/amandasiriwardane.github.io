@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}img{max-width:100%}</style>
+<title>Amanda Siriwardane</title>
+<meta name="description" content="Portfolio of Amanda Siriwardane, software engineer working on identity, security and full-stack systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: fixed glass navbar over an animated trust-graph canvas; photo + gradient name hero; icon-led sections of frosted cards */
+:root{
+  --bg:#F6F7FB; --fg:#0F172A; --muted:#475569; --soft:#64748B;
+  --primary:#0D9488; --accent:#7C3AED;
+  --card:rgba(255,255,255,.80); --card-border:rgba(13,148,136,.18); --shadow:0 8px 32px rgba(15,23,42,.07);
+  --pill:rgba(255,255,255,.75); --pill-border:#E2E8F0; --hover:rgba(13,148,136,.08);
+  --net-a:13,148,136; --net-b:124,58,237; --net-alpha:.55;
+  --sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#05060B; --fg:#F8FAFC; --muted:#B4BED0; --soft:#8A96AD;
+  --primary:#2DD4BF; --accent:#A78BFA;
+  --card:rgba(16,21,36,.78); --card-border:rgba(45,212,191,.20); --shadow:0 8px 32px rgba(0,0,0,.35);
+  --pill:rgba(255,255,255,.06); --pill-border:rgba(255,255,255,.12); --hover:rgba(255,255,255,.08);
+  --net-a:45,212,191; --net-b:167,139,250; --net-alpha:.7; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#05060B; --fg:#F8FAFC; --muted:#B4BED0; --soft:#8A96AD;
+  --primary:#2DD4BF; --accent:#A78BFA;
+  --card:rgba(16,21,36,.78); --card-border:rgba(45,212,191,.20); --shadow:0 8px 32px rgba(0,0,0,.35);
+  --pill:rgba(255,255,255,.06); --pill-border:rgba(255,255,255,.12); --hover:rgba(255,255,255,.08);
+  --net-a:45,212,191; --net-b:167,139,250; --net-alpha:.7; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:88px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit}
+p{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:8px}
+svg.i{width:22px;height:22px;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+#net{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:var(--net-alpha)}
+.page{position:relative;z-index:1}
+.wrap{max-width:1200px;margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.glass{background:var(--card);border:1px solid var(--card-border);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.grad{background:linear-gradient(90deg,var(--primary),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent}
+
+/* navbar */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;padding-top:env(safe-area-inset-top,0px);transition:background .3s,box-shadow .3s,border-color .3s;border-bottom:1px solid transparent}
+.nav.scrolled{background:var(--card);border-bottom-color:var(--card-border);box-shadow:var(--shadow);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{font-weight:800;font-size:18px;text-decoration:none;letter-spacing:-.02em}
+.links{display:flex;align-items:center;gap:4px}
+.nl{padding:8px 14px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;border:0;background:none;cursor:pointer;color:var(--muted);transition:background .15s,color .15s;display:inline-flex;align-items:center;gap:4px}
+.nl:hover,.nl[aria-expanded="true"]{background:var(--hover);color:var(--fg)}
+.nl svg.i{width:16px;height:16px;transition:transform .2s}
+.nl[aria-expanded="true"] svg.i{transform:rotate(180deg)}
+.more{position:relative}
+.menu{position:absolute;top:calc(100% + 6px);right:0;width:200px;padding:8px;border-radius:14px;display:grid;gap:2px}
+.menu a{padding:9px 14px;border-radius:9px;font-size:14px;font-weight:600;text-decoration:none;color:var(--muted)}
+.menu a:hover{background:var(--hover);color:var(--fg)}
+.iconbtn{width:40px;height:40px;border-radius:12px;display:inline-grid;place-items:center;border:1px solid var(--card-border);background:var(--card);cursor:pointer;transition:transform .15s}
+.iconbtn:hover{transform:scale(1.06);color:var(--primary)}
+.iconbtn svg.i{width:19px;height:19px}
+.tools{display:flex;align-items:center;gap:8px}
+.burger{display:none}
+.mobile{margin-bottom:12px;border-radius:18px;padding:10px;display:grid;gap:2px}
+.mobile a{padding:11px 14px;border-radius:10px;font-weight:600;text-decoration:none;color:var(--muted)}
+.mobile a:hover{background:var(--hover);color:var(--fg)}
+
+/* hero */
+main{padding-block:132px 40px}
+.hero{display:flex;gap:72px;align-items:center;margin-bottom:112px}
+.photo{position:relative;width:360px;aspect-ratio:1;max-width:100%;flex-shrink:0;border-radius:48px;overflow:hidden;background:linear-gradient(135deg,var(--primary),var(--accent));display:grid;place-items:center;animation:pop .6s .15s both}
+.photo span{font-weight:800;font-size:112px;letter-spacing:-.04em;color:#fff;opacity:.95}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.photo::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+@keyframes pop{from{transform:scale(.88)}to{transform:none}}
+@keyframes slide{from{transform:translateX(-28px)}to{transform:none}}
+.intro{flex:1;min-width:0;animation:slide .6s both}
+.status{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px}
+.status b{width:8px;height:8px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 4px rgba(var(--net-a),.2)}
+h1{font-size:clamp(40px,6vw,64px);line-height:1.08;font-weight:800;letter-spacing:-.035em;margin:0 0 22px;text-wrap:balance}
+.role{font-size:clamp(21px,2.6vw,28px);font-weight:700;margin-bottom:20px;letter-spacing:-.01em;text-wrap:balance}
+.bio{font-size:18px;color:var(--muted);max-width:40em;margin-bottom:36px}
+.bio strong{color:var(--fg);font-weight:700}
+.social{display:flex;flex-wrap:wrap;gap:14px}
+.sb{display:inline-flex;align-items:center;padding:15px;border-radius:18px;text-decoration:none;transition:transform .25s,color .25s,gap .4s;gap:0}
+.sb span{max-width:0;overflow:hidden;white-space:nowrap;font-size:14px;font-weight:600;transition:max-width .45s ease}
+.sb:hover,.sb:focus-visible{transform:scale(1.05);color:var(--primary);gap:10px}
+.sb:hover span,.sb:focus-visible span{max-width:260px}
+.sb.cv{gap:10px}
+.sb.cv span{max-width:none}
+
+/* sections */
+section{margin-bottom:104px}
+.sh{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.sh svg.i{width:26px;height:26px;color:var(--primary)}
+.sh h2{font-size:clamp(26px,3.4vw,32px);font-weight:800;letter-spacing:-.025em;margin:0;white-space:nowrap}
+.sh::after{content:"";height:1px;flex:1;margin-left:12px;background:linear-gradient(90deg,var(--pill-border),transparent)}
+.stack{display:grid;gap:18px}
+.card{border-radius:22px;padding:26px;transition:transform .15s,border-color .15s;min-width:0}
+.card:hover{transform:translateY(-3px);border-color:rgba(var(--net-a),.45)}
+.rise{animation:rise .55s ease both}
+@keyframes rise{from{transform:translateY(22px)}to{transform:none}}
+
+.ehead{display:flex;gap:20px;margin-bottom:14px}
+.logo-box{width:64px;height:64px;flex-shrink:0;border-radius:18px;display:grid;place-items:center;font-weight:800;font-size:15px;letter-spacing:-.02em;border:1px solid var(--card-border);background:var(--pill)}
+.logo-box.wso2{color:#FF7300}
+.logo-box.uop{color:#8A1538}
+:root[data-theme="dark"] .logo-box.uop{color:#F28AA6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .logo-box.uop{color:#F28AA6}}
+.etop{flex:1;min-width:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 16px}
+.etop h3{font-size:20px;font-weight:800;margin:0;letter-spacing:-.015em}
+.company{font-weight:600;color:var(--primary);display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.company svg.i{width:15px;height:15px}
+.period{font:500 13px var(--mono);color:var(--soft);white-space:nowrap}
+.card ul{margin:0;padding-left:1.15em;display:grid;gap:7px;color:var(--muted)}
+.card li::marker{color:var(--primary)}
+.sub{margin-top:18px;padding-top:16px;border-top:1px dashed var(--pill-border)}
+.sub b{font-weight:700}
+
+/* projects */
+.ph{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+.ph .sh{margin:0;flex:1}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border-radius:14px;background:var(--pill);border:1px solid var(--pill-border)}
+.tab{padding:7px 14px;border-radius:10px;border:0;background:none;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;transition:background .2s,color .2s}
+.tab:hover{color:var(--fg)}
+.tab[aria-pressed="true"]{background:linear-gradient(90deg,var(--primary),var(--accent));color:#fff}
+.pgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.pc{display:flex;flex-direction:column;padding:18px;border-radius:22px}
+.pc[hidden]{display:none!important}
+.cover{position:relative;aspect-ratio:16/10;max-width:100%;border-radius:16px;overflow:hidden;margin-bottom:18px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--c1),var(--c2))}
+.cover svg.i{width:56px;height:56px;stroke-width:1.6;transition:transform .25s}
+.pc:hover .cover svg.i{transform:scale(1.12) rotate(-4deg)}
+.cover::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(255,255,255,.28),transparent 45%),radial-gradient(circle at 85% 90%,rgba(0,0,0,.18),transparent 50%)}
+.cover em{position:absolute;left:12px;bottom:10px;font:500 11px var(--mono);font-style:normal;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.28)}
+.pc h3{font-size:18px;font-weight:800;line-height:1.3;margin:0 0 8px;letter-spacing:-.01em}
+.desc{font-size:14.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pc.open .desc{display:block}
+.toggle{align-self:flex-start;margin:6px 0 12px;padding:0;border:0;background:none;cursor:pointer;color:var(--primary);font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;display:inline-flex;align-items:center;gap:3px}
+.toggle svg.i{width:13px;height:13px;transition:transform .2s}
+.pc.open .toggle svg.i{transform:rotate(180deg)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:6px}
+.tag{padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;background:var(--pill);border:1px solid var(--pill-border);color:var(--muted)}
+.plinks{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;padding-top:14px;border-top:1px solid var(--pill-border)}
+.plinks a{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--muted);transition:color .15s}
+.plinks a:hover{color:var(--primary)}
+.plinks svg.i{width:16px;height:16px}
+.badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:12px;font-weight:700;color:var(--accent)}
+.badge svg.i{width:15px;height:15px}
+
+/* writing */
+.post{display:flex;gap:24px;align-items:center;text-decoration:none}
+.post .pi{width:72px;height:72px;border-radius:20px;flex-shrink:0;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--primary),var(--accent))}
+.post .pi svg.i{width:32px;height:32px}
+.post h3{font-size:clamp(19px,2.4vw,24px);font-weight:800;margin:4px 0 6px;letter-spacing:-.015em;line-height:1.25}
+.post p{color:var(--muted);font-size:15px}
+.kicker{font:500 12px var(--mono);color:var(--primary);text-transform:uppercase;letter-spacing:.08em}
+.read{margin-left:auto;flex-shrink:0;font-weight:700;color:var(--primary);display:inline-flex;align-items:center;gap:6px}
+.read svg.i{width:16px;height:16px}
+
+/* small cards */
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.mini{display:flex;gap:16px;align-items:center;padding:20px;border-radius:20px}
+.mi{width:52px;height:52px;flex-shrink:0;border-radius:16px;display:grid;place-items:center;background:var(--pill);border:1px solid var(--card-border);color:var(--primary)}
+.mi svg.i{width:24px;height:24px}
+.mini h3{font-size:16px;font-weight:700;margin:0;line-height:1.35}
+.mini p{font-size:13.5px;color:var(--soft);margin-top:3px}
+
+/* skills */
+.sk{border-radius:22px;padding:22px}
+.sk h3{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin:0 0 14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border-radius:12px;font-size:14px;font-weight:700;background:var(--pill);border:1px solid var(--pill-border);transition:border-color .15s,transform .15s}
+.chip:hover{border-color:var(--primary);transform:translateY(-2px)}
+.chip i{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--accent))}
+
+/* footer */
+footer{position:relative;z-index:1;border-top:1px solid var(--card-border);background:var(--card);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.foot{display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;padding-block:36px}
+.foot h2{font-size:24px;font-weight:800;margin:0 0 4px;letter-spacing:-.02em}
+.foot p{color:var(--soft);font-size:14px}
+.foot .social{gap:10px}
+.foot .sb{padding:12px}
+.copy{text-align:center;padding-block:0 28px;color:var(--soft);font-size:13px}
+
+@media (max-width:1000px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:860px){
+  .links{display:none}.burger{display:inline-grid}
+  .hero{flex-direction:column;text-align:center;gap:32px;margin-bottom:80px}
+  .photo{width:220px;border-radius:36px}.photo span{font-size:72px}
+  .social{justify-content:center}
+  main{padding-top:104px}
+}
+@media (max-width:640px){
+  .pgrid,.grid2,.grid3{grid-template-columns:minmax(0,1fr)}
+  .ehead{gap:14px}.logo-box{width:52px;height:52px;border-radius:15px;font-size:13px}
+  .post{flex-wrap:wrap}.read{margin-left:0}
+  .card{padding:20px}
+  .sh h2{white-space:normal}
+  .tabs{width:100%}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
+  <symbol id="i-briefcase" viewBox="0 0 24 24"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect x="2" y="6" width="20" height="14" rx="2"/></symbol>
+  <symbol id="i-cap" viewBox="0 0 24 24"><path d="M21.42 10.92a1 1 0 0 0-.02-1.84L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.83l8.57 3.91a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z"/></symbol>
+  <symbol id="i-pill" viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2m-7.07-17.07 1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></symbol>
+</svg>
+
+<canvas id="net" aria-hidden="true"></canvas>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <div class="nav-in">
+      <a class="logo" href="#top"><span class="grad">Amanda</span>.</a>
+      <nav class="links" aria-label="Sections">
+        <a class="nl" href="#top">Home</a>
+        <a class="nl" href="#experience">Experience</a>
+        <a class="nl" href="#education">Education</a>
+        <a class="nl" href="#projects">Projects</a>
+        <a class="nl" href="#writing">Writing</a>
+        <div class="more">
+          <button class="nl" id="moreBtn" type="button" aria-expanded="false" aria-controls="moreMenu">More <svg class="i"><use href="#i-down"/></svg></button>
+          <div class="menu glass" id="moreMenu" hidden>
+            <a href="#achievements">Achievements</a>
+            <a href="#certifications">Certifications</a>
+            <a href="#skills">Skills</a>
+            <a href="#leadership">Leadership</a>
+          </div>
+        </div>
+      </nav>
+      <div class="tools">
+        <button class="iconbtn" id="theme" type="button" aria-label="Switch colour theme"><svg class="i"><use id="themeIcon" href="#i-sun"/></svg></button>
+        <button class="iconbtn burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile"><svg class="i"><use id="burgerIcon" href="#i-menu"/></svg></button>
+      </div>
+    </div>
+    <nav class="mobile glass" id="mobile" aria-label="Sections" hidden>
+      <a href="#top">Home</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#projects">Projects</a><a href="#writing">Writing</a><a href="#achievements">Achievements</a><a href="#certifications">Certifications</a><a href="#skills">Skills</a><a href="#leadership">Leadership</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page">
+<main class="wrap" id="top">
+
+  <div class="hero">
+    <div class="photo">
+      <span aria-hidden="true">AS</span>
+      <img id="photo" src="amanda.jpg" alt="Amanda Siriwardane">
+    </div>
+    <div class="intro">
+      <div class="status glass"><b></b>Open to software engineering roles</div>
+      <h1>Hi, I'm<br><span class="grad">Amanda Siriwardane</span></h1>
+      <p class="role">Software Engineer · Identity &amp; Full-Stack</p>
+      <p class="bio">Computer engineering graduate from the University of Peradeniya, working across <strong>Identity &amp; Access Management</strong>, <strong>Backend Systems</strong>, <strong>Full-Stack Web</strong> and <strong>AI Tooling</strong>. Most recently on the WSO2 Identity Server team, where I built standards-based security event delivery and automated migration assessments.</p>
+      <div class="social">
+        <a class="sb glass" href="https://github.com/amandasiriwardane" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg><span>GitHub</span></a>
+        <a class="sb glass" href="https://www.linkedin.com/in/amanda-siriwardane/" target="_blank" rel="noopener"><svg class="i"><use href="#i-linkedin"/></svg><span>LinkedIn</span></a>
+        <a class="sb glass" href="https://medium.com/@siriwardane567" target="_blank" rel="noopener"><svg class="i"><use href="#i-book"/></svg><span>Medium</span></a>
+        <a class="sb glass" href="mailto:amandasiriwardane01@gmail.com"><svg class="i"><use href="#i-mail"/></svg><span>amandasiriwardane01@gmail.com</span></a>
+        <a class="sb glass cv" href="Amanda_Siriwardane_CV.pdf" target="_blank" rel="noopener"><svg class="i"><use href="#i-file"/></svg><span>View CV</span></a>
+      </div>
+    </div>
+  </div>
+
+  <section id="experience">
+    <div class="sh"><svg class="i"><use href="#i-briefcase"/></svg><h2>Experience</h2></div>
+    <div class="stack">
+      <article class="card glass">
+        <div class="ehead">
+          <div class="logo-box wso2">WSO2</div>
+          <div class="etop">
+            <div>
+              <h3>Software Engineering Intern</h3>
+              <a class="company" href="https://wso2.com" target="_blank" rel="noopener">WSO2 LLC · IAM Team <svg class="i"><use href="#i-ext"/></svg></a>
+            </div>
+            <span class="period">Apr 2026 – Oct 2026</span>
+          </div>
+        </div>
+        <ul>
+          <li>Implemented Shared Signals Framework (SSF) and CAEP event sharing for WSO2 Identity Server.</li>
+          <li>Automated the pre-migration assessment process for WSO2 Identity Server, including an internal Claude Agent Skill.</li>
+          <li>Built Paws &amp; Homes, a full-stack pet adoption platform on WSO2 Asgardeo and Choreo, as the onboarding project.</li>
+        </ul>
+      </article>
+      <article class="card glass">
+        <div class="ehead">
+          <div class="logo-box uop">UoP</div>
+          <div class="etop">
+            <div>
+              <h3>Undergraduate Teaching Assistant</h3>
+              <span class="company">Dept. of Computer Engineering, University of Peradeniya</span>
+            </div>
+            <span class="period">Apr 2025 – Mar 2026</span>
+          </div>
+        </div>
+        <ul>
+          <li><b>Programming for Engineers (CO1810)</b>, Apr – Aug 2025: supported 100+ students with Python and C, ran lab sessions and gave code reviews.</li>
+          <li><b>Data Structures and Algorithms II (CO2030)</b>, Nov 2025 – Mar 2026: assisted with the Java-based course.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="sh"><svg class="i"><use href="#i-cap"/></svg><h2>Education</h2></div>
+    <div class="stack">
+      <article class="card glass">
+        <div class="ehead">
+          <div class="logo-box uop">UoP</div>
+          <div class="etop">
+            <div>
+              <h3>BSc Engineering (Hons), Computer Engineering</h3>
+              <span class="company">University of Peradeniya</span>
+            </div>
+            <span class="period">Feb 2022 – Oct 2026 · GPA 3.56 / 4.0</span>
+          </div>
+        </div>
+        <p style="color:var(--muted)">Coursework: Data Structures and Algorithms, Object Oriented Programming, Machine Learning and Data Mining, Web Development, Database Systems, Neural Networks.</p>
+      </article>
+      <article class="card glass">
+        <div class="ehead">
+          <div class="logo-box">PGS</div>
+          <div class="etop">
+            <div>
+              <h3>Secondary Education, Physical Science Stream</h3>
+              <span class="company">President Girls' School, Colombo</span>
+            </div>
+            <span class="period">Z-score 1.9970 · Island rank 1000</span>
+          </div>
+        </div>
+        <p style="color:var(--muted)">First student in the school's history to qualify for engineering at a state university.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="ph">
+      <div class="sh"><svg class="i"><use href="#i-code"/></svg><h2>Projects</h2></div>
+      <div class="tabs" role="group" aria-label="Filter projects">
+        <button class="tab" type="button" data-f="all" aria-pressed="true">All</button>
+        <button class="tab" type="button" data-f="identity" aria-pressed="false">Identity &amp; Security</button>
+        <button class="tab" type="button" data-f="web" aria-pressed="false">Full-Stack</button>
+        <button class="tab" type="button" data-f="iot" aria-pressed="false">IoT</button>
+        <button class="tab" type="button" data-f="ai" aria-pressed="false">AI &amp; Research</button>
+      </div>
+    </div>
+    <div class="pgrid">
+      <article class="pc glass" data-cat="identity">
+        <div class="cover" style="--c1:#0D9488;--c2:#4F46E5"><svg class="i"><use href="#i-shield"/></svg><em>WSO2 · Internship</em></div>
+        <h3>SSF/CAEP Event Delivery for WSO2 Identity Server</h3>
+        <p class="desc">Designed and built a connector implementing the SSF Stream Management REST API, so WSO2 Identity Server can deliver CAEP security events to external receivers over an OAuth2-protected, standards-based transport. The service layer delegates CRUD to the existing WebhookManagementService to avoid duplicated persistence logic. Redesigned event-publisher resolution from a single, non-deterministic lookup to a per-event-profile map, so the new JWS-signing SSF publisher runs alongside the existing HTTP publisher with zero regression.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">Java</span><span class="tag">OSGi</span><span class="tag">REST API</span><span class="tag">OAuth2</span><span class="tag">JWS/JWT</span></div>
+        <div class="plinks"><a href="https://github.com/amandasiriwardane/identity-shared-signals-framework-fork" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>SSF connector</a><a href="https://github.com/amandasiriwardane/carbon-identity-framework-fork" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Framework</a><a href="https://github.com/amandasiriwardane/identity-event-publishers-fork" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Publishers</a><a href="https://github.com/amandasiriwardane/identity-webhook-event-handlers-fork" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Webhook handlers</a></div>
+      </article>
+      <article class="pc glass" data-cat="identity ai">
+        <div class="cover" style="--c1:#7C3AED;--c2:#0EA5E9"><svg class="i"><use href="#i-db"/></svg><em>WSO2 · Internship</em></div>
+        <h3>Automated Pre-Migration Assessments</h3>
+        <p class="desc">Replaced manual calls with diagnostic SQL scripts that surface feature usage before a WSO2 Identity Server migration. Authored and live-verified query sets across major upgrades (5.10.0 to 7.0.0) against Docker-hosted instances, and built an internal Claude Agent Skill that generates a dialect-aware SQL script for each version pair, with traceability and risk flags.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">SQL</span><span class="tag">MySQL</span><span class="tag">Docker</span><span class="tag">Claude + MCP</span></div>
+      </article>
+      <article class="pc glass" data-cat="identity web">
+        <div class="cover" style="--c1:#F97316;--c2:#DB2777"><svg class="i"><use href="#i-heart"/></svg><em>WSO2 · Onboarding</em></div>
+        <h3>Paws &amp; Homes: Pet Adoption Portal</h3>
+        <p class="desc">A full-stack SaaS pet adoption platform built in two weeks. OIDC-based authentication and JWT validation with WSO2 Asgardeo for 3 user roles, a REST API on PostgreSQL secured with role-based access control, and CI/CD plus API management on WSO2 Choreo.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Express</span><span class="tag">PostgreSQL</span><span class="tag">Asgardeo</span><span class="tag">Choreo</span></div>
+        <div class="plinks"><a href="https://github.com/amandasiriwardane/paws-and-homes" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Frontend</a><a href="https://github.com/amandasiriwardane/paws-and-homes-backend" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Backend</a></div>
+      </article>
+      <article class="pc glass" data-cat="iot web">
+        <div class="cover" style="--c1:#F59E0B;--c2:#DC2626"><svg class="i"><use href="#i-cpu"/></svg><em>3rd year · Group</em></div>
+        <h3>Safe Plus: Smart Safety Helmet</h3>
+        <p class="desc">A smart helmet that detects industrial hazards and sends real-time alerts from ESP32 through AWS IoT to a backend, dashboard and mobile app. I led the dashboard: secure authentication with JWT, bcrypt and 2FA, worker management and real-time sensor visualisation. I also managed the full deployment, with the frontend on Netlify, the backend on Railway and the domain configuration.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">ESP32</span><span class="tag">AWS IoT Core</span><span class="tag">MERN</span><span class="tag">2FA</span></div>
+        <span class="badge"><svg class="i"><use href="#i-award"/></svg>IEEE SL FYP Arena 2025 Finalist · EngEx 2025</span>
+        <div class="plinks"><a href="https://github.com/cepdnaclk/e20-3yp-SafePlus" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Code</a><a href="https://cepdnaclk.github.io/e20-3yp-SafePlus/" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg>Project page</a></div>
+      </article>
+      <article class="pc glass" data-cat="ai">
+        <div class="cover" style="--c1:#2563EB;--c2:#9333EA"><svg class="i"><use href="#i-spark"/></svg><em>Final year project · Research</em></div>
+        <h3>Multimodal Phenotyping in Knee Osteoarthritis Using VLMs</h3>
+        <p class="desc">An unsupervised multimodal framework that finds new knee osteoarthritis phenotypes by combining radiographs and clinical text. BioMedCLIP aligns imaging features with clinical descriptions, HDBSCAN clustering finds latent disease subgroups beyond standard severity scales, and Grad-CAM with textual explanations validates the phenotypes for clinical transparency.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">Python</span><span class="tag">PyTorch</span><span class="tag">BioMedCLIP</span><span class="tag">HDBSCAN</span><span class="tag">Grad-CAM</span></div>
+        <div class="plinks"><a href="https://github.com/cepdnaclk/e20-4yp-VLM-Guided-Phenotyping-of-KOA" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Code</a><a href="https://cepdnaclk.github.io/e20-4yp-VLM-Guided-Phenotyping-of-KOA/" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg>Project page</a></div>
+      </article>
+      <article class="pc glass" data-cat="web">
+        <div class="cover" style="--c1:#10B981;--c2:#0284C7"><svg class="i"><use href="#i-pill"/></svg><em>Individual project</em></div>
+        <h3>MediGo: Pharmacy Delivery Platform</h3>
+        <p class="desc">A multi-role pharmacy delivery platform for 3 user types with 15+ REST endpoints, role-based auth, Cloudinary-powered product management and centralised state with Redux Toolkit. Normalised MongoDB schemas, deployed to production on Vercel (frontend) and Render (backend) with custom SPA routing rules.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">MERN</span><span class="tag">Redux Toolkit</span><span class="tag">Material-UI</span><span class="tag">Cloudinary</span></div>
+        <div class="plinks"><a href="https://github.com/amandasiriwardane/MediGo--Pharmacy-App" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Code</a><a href="https://medi-go-pharmacy-app.vercel.app" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg>Live demo</a></div>
+      </article>
+      <article class="pc glass" data-cat="iot web">
+        <div class="cover" style="--c1:#0891B2;--c2:#4338CA"><svg class="i"><use href="#i-activity"/></svg><em>2nd year · Group</em></div>
+        <h3>MONA: Production Monitoring Dashboard</h3>
+        <p class="desc">A real-time monitoring system for 24 plastic toy machines, with live production updates and emergency alerts to minimise downtime. Includes live data visualisation, a scalable backend and historical production records for analytics and performance tracking.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">React</span><span class="tag">JavaScript</span><span class="tag">Python</span><span class="tag">MongoDB</span></div>
+        <div class="plinks"><a href="https://github.com/cepdnaclk/e20-co227-MONA-Dashboard" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Code</a><a href="https://cepdnaclk.github.io/e20-co227-MONA-Dashboard" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg>Project page</a></div>
+      </article>
+      <article class="pc glass" data-cat="ai web">
+        <div class="cover" style="--c1:#DB2777;--c2:#6D28D9"><svg class="i"><use href="#i-code"/></svg><em>Personal project</em></div>
+        <h3>AmazAI: Agentic AI Code Review Platform</h3>
+        <p class="desc">An IDE-style code review platform where an agent loop uses Gemini tool calling to run local AST parsing (Acorn) and regex security scans before it writes a review, so syntax errors and hardcoded secrets are caught deterministically. A fallback queue reroutes requests across several Gemini models during rate limits. The Monaco editor shows errors inline, with JWT and Google OAuth sign-in and email verification through Resend.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">Gemini</span><span class="tag">Tool Calling</span><span class="tag">MongoDB</span><span class="tag">Monaco</span></div>
+        <div class="plinks"><a href="https://github.com/amandasiriwardane/ai-code-reviewer" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Code</a><a href="https://ai-code-reviewer-frontend-eight.vercel.app/" target="_blank" rel="noopener"><svg class="i"><use href="#i-ext"/></svg>Live demo</a></div>
+      </article>
+      <article class="pc glass" data-cat="iot">
+        <div class="cover" style="--c1:#0EA5E9;--c2:#14B8A6"><svg class="i"><use href="#i-activity"/></svg><em>Course project · CO326</em></div>
+        <h3>Room Temperature Anomaly Detection</h3>
+        <p class="desc">An ESP32-S3 with a DHT22 sensor streams temperature and humidity readings over MQTT to a Python service that flags anomalies and publishes alerts back to the device.</p>
+        <button class="toggle" type="button" hidden>See more <svg class="i"><use href="#i-down"/></svg></button>
+        <div class="tags"><span class="tag">ESP32-S3</span><span class="tag">DHT22</span><span class="tag">MQTT</span><span class="tag">Python</span><span class="tag">PlatformIO</span></div>
+        <div class="plinks"><a href="https://github.com/amandasiriwardane/e20-co326-Room-Temperature-Anomaly-Detection" target="_blank" rel="noopener"><svg class="i"><use href="#i-github"/></svg>Code</a></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="writing">
+    <div class="sh"><svg class="i"><use href="#i-book"/></svg><h2>Writing</h2></div>
+    <a class="card glass post" href="https://medium.com/@siriwardane567/from-plain-java-to-an-osgi-codebase-what-i-wish-i-knew-on-day-one-14ecfc25a056" target="_blank" rel="noopener">
+      <div class="pi"><svg class="i"><use href="#i-book"/></svg></div>
+      <div>
+        <span class="kicker">Medium</span>
+        <h3>From Plain Java to an OSGi Codebase: What I Wish I Knew on Day One</h3>
+        <p>Lessons from moving into the OSGi-based WSO2 Identity Server codebase as an intern.</p>
+      </div>
+      <span class="read">Read <svg class="i"><use href="#i-arrow"/></svg></span>
+    </a>
+  </section>
+
+  <section id="achievements">
+    <div class="sh"><svg class="i"><use href="#i-award"/></svg><h2>Achievements</h2></div>
+    <div class="grid3">
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-cpu"/></svg></div><div><h3>Finalist, IEEE Sri Lanka FYP Arena</h3><p>Safe Plus · 2025</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-github"/></svg></div><div><h3>Hacktoberfest Super Contributor</h3><p>Open source · Oct 2025</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-code"/></svg></div><div><h3>Finalist, Pre-Coders</h3><p>6-hour contest, 80+ teams · Aug 2024</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-code"/></svg></div><div><h3>Competed in Coders v11.0</h3><p>12-hour all-island contest, 300+ teams · Oct 2024</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-award"/></svg></div><div><h3>Half Colours, Badminton</h3><p>University of Peradeniya · Jan 2024</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-cap"/></svg></div><div><h3>First engineering entrant in school history</h3><p>President Girls' School, Colombo</p></div></div>
+    </div>
+  </section>
+
+  <section id="certifications">
+    <div class="sh"><svg class="i"><use href="#i-file"/></svg><h2>Certifications</h2></div>
+    <div class="grid3">
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-db"/></svg></div><div><h3>AWS Basics</h3><p>KodeKloud · 2026</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-db"/></svg></div><div><h3>AWS Technical Essentials</h3><p>AWS Skill Builder · 2025</p></div></div>
+      <div class="mini glass card"><div class="mi"><svg class="i"><use href="#i-spark"/></svg></div><div><h3>Artificial Intelligence for Beginners</h3><p>Alison · 2024</p></div></div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="sh"><svg class="i"><use href="#i-wrench"/></svg><h2>Skills</h2></div>
+    <div class="grid2">
+      <div class="sk glass"><h3>Languages</h3><div class="chips"><span class="chip"><i></i>Java</span><span class="chip"><i></i>JavaScript</span><span class="chip"><i></i>Python</span><span class="chip"><i></i>C</span><span class="chip"><i></i>SQL</span></div></div>
+      <div class="sk glass"><h3>Frontend &amp; Backend</h3><div class="chips"><span class="chip"><i></i>React.js</span><span class="chip"><i></i>Redux Toolkit</span><span class="chip"><i></i>HTML / CSS</span><span class="chip"><i></i>Node.js</span><span class="chip"><i></i>Express.js</span><span class="chip"><i></i>REST API Design</span><span class="chip"><i></i>OSGi</span></div></div>
+      <div class="sk glass"><h3>Identity &amp; Access</h3><div class="chips"><span class="chip"><i></i>OAuth2</span><span class="chip"><i></i>OIDC</span><span class="chip"><i></i>JWT / JWS</span><span class="chip"><i></i>WSO2 Identity Server</span><span class="chip"><i></i>WSO2 Asgardeo</span><span class="chip"><i></i>SSF / CAEP</span></div></div>
+      <div class="sk glass"><h3>Databases &amp; Cloud</h3><div class="chips"><span class="chip"><i></i>MongoDB</span><span class="chip"><i></i>MySQL</span><span class="chip"><i></i>PostgreSQL</span><span class="chip"><i></i>AWS</span><span class="chip"><i></i>Docker</span><span class="chip"><i></i>Vercel</span><span class="chip"><i></i>Netlify</span><span class="chip"><i></i>Render</span></div></div>
+      <div class="sk glass"><h3>AI &amp; Data</h3><div class="chips"><span class="chip"><i></i>Claude / MCP Agents</span><span class="chip"><i></i>PyTorch</span><span class="chip"><i></i>Vision-Language Models</span><span class="chip"><i></i>OpenCV</span><span class="chip"><i></i>NumPy</span></div></div>
+      <div class="sk glass"><h3>Tools</h3><div class="chips"><span class="chip"><i></i>Git</span><span class="chip"><i></i>GitHub</span><span class="chip"><i></i>Postman</span></div></div>
+    </div>
+  </section>
+
+  <section id="leadership">
+    <div class="sh"><svg class="i"><use href="#i-users"/></svg><h2>Leadership &amp; Volunteering</h2></div>
+    <div class="grid2">
+      <article class="card glass">
+        <div class="etop" style="margin-bottom:10px"><h3>IEEE Computer Society Student Chapter</h3><span class="period">Aug 2024 – Present</span></div>
+        <ul><li><b>Chairperson</b>, Nov 2025 – present</li><li><b>Design Team Lead</b>, Aug 2024 – Nov 2025</li></ul>
+      </article>
+      <article class="card glass">
+        <div class="etop" style="margin-bottom:10px"><h3>AIESEC in University of Peradeniya</h3><span class="period">Aug 2022 – Jan 2024</span></div>
+        <ul><li><b>Brand Manager &amp; Marketing Specialist</b>, Outgoing Global Volunteering, Feb 2023 – Jan 2024</li><li><b>Team Member</b>, H4TF, Aug 2022 – Feb 2023</li></ul>
+      </article>
+      <article class="card glass">
+        <div class="etop" style="margin-bottom:10px"><h3>Shanghai International Youth Friendship Camp</h3><span class="period">Jul 2017</span></div>
+        <ul><li>Selected as one of 5 representatives from Sri Lanka, working with youth from 25+ countries.</li></ul>
+      </article>
+      <article class="card glass">
+        <div class="etop" style="margin-bottom:10px"><h3>Sport &amp; Community</h3><span class="period">Ongoing</span></div>
+        <ul><li>Badminton team player, University of Peradeniya and President Girls' School</li><li>Member, Rotaract Club of University of Peradeniya</li></ul>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <h2>Let's <span class="grad">work together</span></h2>
+        <p>amandasiriwardane01@gmail.com · Colombo, Sri Lanka</p>
+      </div>
+      <div class="social">
+        <a class="sb glass" href="https://github.com/amandasiriwardane" target="_blank" rel="noopener" aria-label="GitHub"><svg class="i"><use href="#i-github"/></svg></a>
+        <a class="sb glass" href="https://www.linkedin.com/in/amanda-siriwardane/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="i"><use href="#i-linkedin"/></svg></a>
+        <a class="sb glass" href="https://medium.com/@siriwardane567" target="_blank" rel="noopener" aria-label="Medium"><svg class="i"><use href="#i-book"/></svg></a>
+        <a class="sb glass" href="mailto:amandasiriwardane01@gmail.com" aria-label="Email"><svg class="i"><use href="#i-mail"/></svg></a>
+      </div>
+    </div>
+    <p class="copy">© 2026 Amanda Siriwardane</p>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement,$=function(i){return document.getElementById(i)};
+
+  /* photo: fall back to initials until amanda.jpg exists */
+  var img=$('photo');
+  function noPhoto(){img.hidden=true}
+  if(img.complete&&!img.naturalWidth)noPhoto();
+  img.addEventListener('error',noPhoto);
+
+  /* theme toggle */
+  var dark=matchMedia('(prefers-color-scheme: dark)');
+  function isDark(){var t=root.getAttribute('data-theme');return t?t==='dark':dark.matches}
+  function syncIcon(){$('themeIcon').setAttribute('href',isDark()?'#i-sun':'#i-moon')}
+  try{var saved=localStorage.getItem('as-theme');if(saved)root.setAttribute('data-theme',saved)}catch(e){}
+  syncIcon();
+  dark.addEventListener&&dark.addEventListener('change',syncIcon);
+  $('theme').addEventListener('click',function(){
+    var next=isDark()?'light':'dark';root.setAttribute('data-theme',next);syncIcon();
+    try{localStorage.setItem('as-theme',next)}catch(e){}
+  });
+
+  /* navbar */
+  var nav=$('nav');
+  function onScroll(){nav.classList.toggle('scrolled',scrollY>20)}
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  var mb=$('moreBtn'),mm=$('moreMenu'),more=mb.parentNode;
+  function setMore(o){mm.hidden=!o;mb.setAttribute('aria-expanded',o)}
+  mb.addEventListener('click',function(){setMore(mm.hidden)});
+  more.addEventListener('mouseenter',function(){setMore(true)});
+  more.addEventListener('mouseleave',function(){setMore(false)});
+  mm.addEventListener('click',function(){setMore(false)});
+  var bg=$('burger'),mob=$('mobile');
+  function setMob(o){mob.hidden=!o;bg.setAttribute('aria-expanded',o);$('burgerIcon').setAttribute('href',o?'#i-x':'#i-menu')}
+  bg.addEventListener('click',function(){setMob(mob.hidden)});
+  mob.addEventListener('click',function(e){if(e.target.tagName==='A')setMob(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){setMore(false);setMob(false)}});
+
+  /* project filter + see more */
+  var tabs=[].slice.call(document.querySelectorAll('.tab')),cards=[].slice.call(document.querySelectorAll('.pc'));
+  tabs.forEach(function(t){t.addEventListener('click',function(){
+    var f=t.getAttribute('data-f');
+    tabs.forEach(function(x){x.setAttribute('aria-pressed',x===t)});
+    cards.forEach(function(c){c.hidden=f!=='all'&&c.getAttribute('data-cat').split(' ').indexOf(f)<0});
+    checkClamp();
+  })});
+  function checkClamp(){cards.forEach(function(c){
+    if(c.hidden||c.classList.contains('open'))return;
+    var d=c.querySelector('.desc');c.querySelector('.toggle').hidden=d.scrollHeight<=d.clientHeight+2;
+  })}
+  cards.forEach(function(c){var b=c.querySelector('.toggle');b.addEventListener('click',function(){
+    var o=c.classList.toggle('open');b.firstChild.nodeValue=o?'See less ':'See more ';
+  })});
+  checkClamp();addEventListener('resize',checkClamp);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(checkClamp);
+
+  /* cards rise into place as they scroll in (always readable) */
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if('IntersectionObserver' in window&&!reduce){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('rise');io.unobserve(e.target)}})},{rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('section .glass').forEach(function(el){if(el.getBoundingClientRect().top>innerHeight)io.observe(el)});
+  }
+
+  /* trust-graph background: drifting nodes, links between neighbours, signals hopping along links */
+  var cv=$('net'),ctx=cv.getContext('2d'),W=0,H=0,nodes=[],edges=[],adj=[],pulses=[],mouse={x:-9999,y:-9999},A='45,212,191',B='167,139,250',frame=0,raf;
+  function colors(){var s=getComputedStyle(root);A=s.getPropertyValue('--net-a').trim()||A;B=s.getPropertyValue('--net-b').trim()||B}
+  function build(){
+    var dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;
+    cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.max(28,Math.min(110,Math.round(W*H/15000)));nodes=[];edges=[];adj=[];pulses=[];
+    for(var i=0;i<n;i++){nodes.push({bx:Math.random()*W,by:Math.random()*H,x:0,y:0,ph:Math.random()*6.28,sp:.004+Math.random()*.008,r:1.6+Math.random()*1.8});adj.push([])}
+    var D=Math.min(190,Math.max(120,W/8));
+    for(i=0;i<n;i++){
+      var near=[];for(var j=0;j<n;j++){if(i===j)continue;var dx=nodes[i].bx-nodes[j].bx,dy=nodes[i].by-nodes[j].by,d=Math.sqrt(dx*dx+dy*dy);if(d<D)near.push([d,j])}
+      near.sort(function(a,b){return a[0]-b[0]});
+      near.slice(0,3).forEach(function(p){var j=p[1];if(i<j||adj[j].indexOf(i)<0){if(adj[i].indexOf(j)<0){edges.push([i,j]);adj[i].push(j);adj[j].push(i)}}});
+    }
+    colors();
+  }
+  function step(){
+    nodes.forEach(function(p){
+      p.ph+=p.sp;var hx=p.bx+Math.cos(p.ph)*14,hy=p.by+Math.sin(p.ph*1.3)*14;
+      var dx=hx-mouse.x,dy=hy-mouse.y,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){var f=(140-d)/140*40;hx+=dx/d*f;hy+=dy/d*f}
+      p.x=hx;p.y=hy;p.g=Math.max(0,1-d/160);
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.lineWidth=1;
+    edges.forEach(function(e){var a=nodes[e[0]],b=nodes[e[1]],g=Math.max(a.g,b.g);
+      var gr=ctx.createLinearGradient(a.x,a.y,b.x,b.y);gr.addColorStop(0,'rgba('+A+','+(.22+g*.5)+')');gr.addColorStop(1,'rgba('+B+','+(.22+g*.5)+')');
+      ctx.strokeStyle=gr;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()});
+    nodes.forEach(function(p){var s=p.r*(1+p.g*1.2),glow=s*(3+Math.sin(p.ph*2));
+      var gr=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,glow);gr.addColorStop(0,'rgba('+A+','+(.45+p.g*.4)+')');gr.addColorStop(1,'rgba('+A+',0)');
+      ctx.fillStyle=gr;ctx.beginPath();ctx.arc(p.x,p.y,glow,0,6.283);ctx.fill();
+      ctx.fillStyle='rgba('+A+','+(.85+p.g*.15)+')';ctx.beginPath();ctx.arc(p.x,p.y,s,0,6.283);ctx.fill()});
+    pulses.forEach(function(q){var a=nodes[q.f],b=nodes[q.t];
+      for(var k=0;k<7;k++){var t=Math.max(0,q.p-k*.03),x=a.x+(b.x-a.x)*t,y=a.y+(b.y-a.y)*t;
+        ctx.fillStyle='rgba('+B+','+(1-k/7)*.55+')';ctx.beginPath();ctx.arc(x,y,2.4*(1-k/7)+.4,0,6.283);ctx.fill()}
+      var hx=a.x+(b.x-a.x)*q.p,hy=a.y+(b.y-a.y)*q.p,hg=ctx.createRadialGradient(hx,hy,0,hx,hy,7);
+      hg.addColorStop(0,'rgba('+B+',.9)');hg.addColorStop(1,'rgba('+B+',0)');ctx.fillStyle=hg;ctx.beginPath();ctx.arc(hx,hy,7,0,6.283);ctx.fill()});
+  }
+  function loop(){
+    if(++frame%45===0)colors();
+    step();
+    if(edges.length&&Math.random()<.08&&pulses.length<26){var e=edges[Math.floor(Math.random()*edges.length)],fw=Math.random()<.5;pulses.push({f:fw?e[0]:e[1],t:fw?e[1]:e[0],p:0,s:.012+Math.random()*.014})}
+    for(var i=pulses.length-1;i>=0;i--){var q=pulses[i];q.p+=q.s;if(q.p>=1){pulses.splice(i,1);
+      if(Math.random()<.6){var nx=adj[q.t].filter(function(j){return j!==q.f});if(nx.length)pulses.push({f:q.t,t:nx[Math.floor(Math.random()*nx.length)],p:0,s:q.s})}}}
+    draw();raf=requestAnimationFrame(loop);
+  }
+  build();
+  if(reduce){step();draw()}else{loop()}
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){build();if(reduce){step();draw()}},150)});
+  addEventListener('mousemove',function(e){mouse.x=e.clientX;mouse.y=e.clientY},{passive:true});
+  document.addEventListener('mouseleave',function(){mouse.x=mouse.y=-9999});
+  document.addEventListener('visibilitychange',function(){if(reduce)return;if(document.hidden)cancelAnimationFrame(raf);else loop()});
+  new MutationObserver(function(){colors();if(reduce)draw()}).observe(root,{attributes:true,attributeFilter:['data-theme']});
+})();
+</script>
+</body>
+</html>
